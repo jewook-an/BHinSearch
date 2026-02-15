@@ -13,7 +13,7 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         {/* 레이아웃이 있는 페이지들 */}
         <Route path="/" element={<Layout><HomePage /></Layout>} />

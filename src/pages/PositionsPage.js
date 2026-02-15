@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PositionCard from '../components/Position/PositionCard';
 import SearchFilter from '../components/Position/SearchFilter';
 import './PositionsPage.css';
@@ -112,7 +112,7 @@ const mockPositions = [
 ];
 
 const PositionsPage = () => {
-  const [positions, setPositions] = useState(mockPositions);
+  const [positions] = useState(mockPositions);
   const [filteredPositions, setFilteredPositions] = useState(mockPositions);
   const [loading, setLoading] = useState(false);
 
