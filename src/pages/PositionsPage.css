@@ -1,0 +1,124 @@
+.positions-page {
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+  padding: var(--spacing-xl) 0;
+}
+
+.positions-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--spacing-xl);
+}
+
+.filter-sidebar {
+  height: fit-content;
+}
+
+.positions-main {
+  min-width: 0;
+}
+
+.positions-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.positions-header h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.result-count {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.result-count strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.positions-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-2xl);
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--spacing-md);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading p {
+  color: var(--text-secondary);
+}
+
+.no-results {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius);
+  margin-top: var(--spacing-xl);
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.no-results h3 {
+  font-size: var(--font-size-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.no-results p {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1024px) {
+  .positions-container {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-sidebar {
+    order: 2;
+  }
+
+  .positions-main {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .positions-page {
+    padding: var(--spacing-md) 0;
+  }
+
+  .positions-container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .positions-header h1 {
+    font-size: var(--font-size-2xl);
+  }
+}
