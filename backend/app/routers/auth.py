@@ -1,5 +1,5 @@
 from datetime import timedelta
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from app.models.user import User
 from app.schemas.user import UserRegister, UserLogin, Token, UserResponse
@@ -8,6 +8,7 @@ from app.utils.auth import (
     get_password_hash,
     create_access_token
 )
+from app.config import settings
 from app.config import settings
 
 router = APIRouter()
@@ -96,4 +97,3 @@ async def login_with_form(form_data: OAuth2PasswordRequestForm = Depends()):
 
     return Token(access_token=access_token, token_type="bearer")
 
-from fastapi import Depends
