@@ -1,0 +1,613 @@
+.profile-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 40px 20px;
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 프로필 헤더 */
+.profile-header {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.profile-image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.profile-image,
+.profile-image-placeholder {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-image-placeholder {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-initial {
+  font-size: 48px;
+  color: white;
+  font-weight: bold;
+}
+
+.btn-change-photo {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-change-photo:hover {
+  background: #f5f5f5;
+  border-color: var(--primary-color);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h1 {
+  font-size: 32px;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.profile-position {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.profile-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.profile-meta span {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 프로필 완성도 */
+.profile-completeness {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 24px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.progress-text {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 18px;
+  min-width: 50px;
+}
+
+.completeness-tips {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.completeness-tips p {
+  margin: 0 0 10px 0;
+  font-weight: 500;
+  color: #333;
+}
+
+.completeness-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.completeness-tips li {
+  padding: 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.completeness-tips li::before {
+  content: '→ ';
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* 프로필 컨텐츠 레이아웃 */
+.profile-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+}
+
+/* 프로필 섹션 */
+.profile-section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section-header h2 {
+  font-size: 22px;
+  margin: 0;
+  color: #333;
+}
+
+.btn-edit {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.btn-edit:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.section-content {
+  color: #666;
+  line-height: 1.8;
+}
+
+/* 타임라인 (경력사항) */
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e0e0e0;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -35px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  background: var(--primary-color);
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.timeline-content {
+  padding-bottom: 20px;
+}
+
+.career-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.career-header h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+
+.badge-current {
+  background: #4caf50;
+  color: white;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.company-name {
+  font-size: 16px;
+  color: #666;
+  margin: 5px 0;
+  font-weight: 500;
+}
+
+.career-period {
+  font-size: 14px;
+  color: #999;
+  margin: 5px 0;
+}
+
+.career-description {
+  margin-top: 10px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 학력사항 */
+.education-item {
+  padding: 20px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.education-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.education-item h3 {
+  font-size: 18px;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.education-item p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.education-period {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 자격증 */
+.certificates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.certificate-card {
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.certificate-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.certificate-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.certificate-card h3 {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.certificate-org {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.certificate-date {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+/* 사이드바 */
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-section {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-section h3 {
+  font-size: 18px;
+  margin: 0 0 15px 0;
+  color: #333;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+/* 보유 기술 */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.skill-tag {
+  background: #f0f4ff;
+  color: var(--primary-color);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.btn-add {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  color: var(--primary-color);
+  border: 1px dashed var(--primary-color);
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-add:hover {
+  background: #f0f4ff;
+}
+
+/* 이력서/자기소개서 */
+.resume-list,
+.cover-letter-list {
+  margin-bottom: 15px;
+}
+
+.resume-item,
+.cover-letter-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+}
+
+.resume-item:hover,
+.cover-letter-item:hover {
+  border-color: var(--primary-color);
+  background: #f8f9fa;
+  cursor: pointer;
+}
+
+.resume-icon,
+.cover-letter-icon {
+  font-size: 24px;
+}
+
+.resume-info,
+.cover-letter-info {
+  flex: 1;
+}
+
+.resume-name,
+.cover-letter-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.resume-date,
+.cover-letter-date {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+}
+
+/* 활동 내역 */
+.activity-stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+}
+
+/* 버튼 스타일 */
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline {
+  background: white;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-full {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .profile-content {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-sidebar {
+    order: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 20px 10px;
+  }
+
+  .profile-header {
+    padding: 20px;
+  }
+
+  .profile-header-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-info {
+    width: 100%;
+  }
+
+  .profile-meta {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profile-section {
+    padding: 20px;
+  }
+
+  .certificates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline {
+    padding-left: 20px;
+  }
+
+  .timeline-marker {
+    left: -25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-info h1 {
+    font-size: 24px;
+  }
+
+  .profile-position {
+    font-size: 16px;
+  }
+
+  .section-header h2 {
+    font-size: 18px;
+  }
+
+  .profile-image,
+  .profile-image-placeholder {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-initial {
+    font-size: 36px;
+  }
+}

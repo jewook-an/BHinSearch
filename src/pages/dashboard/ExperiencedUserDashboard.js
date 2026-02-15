@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './ExperiencedUserDashboard.css';
 
 const ExperiencedUserDashboard = () => {
@@ -132,17 +133,17 @@ const ExperiencedUserDashboard = () => {
               <div className="progress-fill" style={{width: '75%'}}></div>
             </div>
             <p className="progress-text">75% 완성</p>
-            <button className="btn btn-primary btn-small">프로필 완성하기</button>
+            <Link to="/profile/edit" className="btn btn-primary btn-small">프로필 완성하기</Link>
           </div>
 
           <div className="sidebar-card">
             <h3>빠른 메뉴</h3>
             <ul className="quick-menu">
-              <li><a href="/profile">내 프로필</a></li>
-              <li><a href="/resume">이력서 관리</a></li>
-              <li><a href="/positions">포지션 검색</a></li>
-              <li><a href="/community">커뮤니티</a></li>
-              <li><a href="/settings">설정</a></li>
+              <li><Link to="/profile">내 프로필</Link></li>
+              <li><Link to="/profile">이력서 관리</Link></li>
+              <li><Link to="/positions">포지션 검색</Link></li>
+              <li><Link to="/community">커뮤니티</Link></li>
+              <li><Link to="/settings">설정</Link></li>
             </ul>
           </div>
 

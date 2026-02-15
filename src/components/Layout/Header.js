@@ -14,9 +14,12 @@ const Header = () => {
           <Link to="/positions" className="nav-link">포지션 검색</Link>
           <Link to="/about" className="nav-link">서비스 소개</Link>
           <Link to="/community" className="nav-link">커뮤니티</Link>
+          <Link to="/profile" className="nav-link">프로필</Link>
         </nav>
 
         <div className="auth-buttons">
+          {/* 실제로는 로그인 상태에 따라 조건부 렌더링 */}
+          <Link to="/dashboard" className="btn btn-outline">대시보드</Link>
           <Link to="/login" className="btn btn-outline">로그인</Link>
           <Link to="/register" className="btn btn-primary">회원가입</Link>
         </div>

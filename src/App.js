@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import PositionsPage from './pages/PositionsPage';
 import PositionDetailPage from './pages/PositionDetailPage';
+import ProfilePage from './pages/ProfilePage';
+import ProfileEditPage from './pages/ProfileEditPage';
 import ExperiencedUserDashboard from './pages/dashboard/ExperiencedUserDashboard';
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import RecruiterDashboard from './pages/dashboard/RecruiterDashboard';
@@ -31,6 +33,10 @@ function App() {
         {/* 포지션 관련 페이지들 */}
         <Route path="/positions" element={<Layout><PositionsPage /></Layout>} />
         <Route path="/positions/:id" element={<Layout><PositionDetailPage /></Layout>} />
+
+        {/* 프로필 페이지들 */}
+        <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
+        <Route path="/profile/edit" element={<Layout><ProfileEditPage /></Layout>} />
 
         {/* 추가 페이지들 (placeholder) */}
         <Route path="/about" element={<Layout><div style={{padding: '2rem', textAlign: 'center'}}><h1>서비스 소개</h1><p>개발 예정</p></div></Layout>} />

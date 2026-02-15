@@ -110,7 +110,7 @@ function App() {
       // GitHub Pages SPA 라우팅 해결
       // 404 에러 발생 시 → index.html로 리다이렉트하면서 경로 정보 유지
       var pathSegmentsToKeep = 1; // /BHinSearch 유지
-      
+
       var l = window.location;
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
@@ -153,13 +153,13 @@ React Router 처리 ✅
 ```html
 <head>
   <!-- 기존 내용... -->
-  
+
   <!-- Single Page Apps for GitHub Pages -->
   <script type="text/javascript">
     // 404.html에서 리다이렉트된 경로를 복원
     (function(l) {
       if (l.search[1] === '/' ) {
-        var decoded = l.search.slice(1).split('&').map(function(s) { 
+        var decoded = l.search.slice(1).split('&').map(function(s) {
           return s.replace(/~and~/g, '&')
         }).join('?');
         window.history.replaceState(null, null,
@@ -168,7 +168,7 @@ React Router 처리 ✅
       }
     }(window.location))
   </script>
-  
+
   <title>보험업계 ATS - 채용관리 솔루션</title>
 </head>
 ```
