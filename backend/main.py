@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import init_db
-from app.routers import auth, users, profiles, positions, applications, files, notifications
+from app.routers import auth, users, profiles, positions, applications, files, notifications, posts
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -27,6 +27,7 @@ app.include_router(positions.router, prefix=f"{settings.API_V1_PREFIX}/positions
 app.include_router(applications.router, prefix=f"{settings.API_V1_PREFIX}/applications", tags=["지원관리"])
 app.include_router(files.router, prefix=f"{settings.API_V1_PREFIX}/files", tags=["파일업로드"])
 app.include_router(notifications.router, prefix=f"{settings.API_V1_PREFIX}/notifications", tags=["알림"])
+app.include_router(posts.router, prefix=f"{settings.API_V1_PREFIX}/posts", tags=["게시판"])
 
 @app.on_event("startup")
 async def startup_event():

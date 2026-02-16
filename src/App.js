@@ -8,6 +8,8 @@ import PositionsPage from './pages/PositionsPage';
 import PositionDetailPage from './pages/PositionDetailPage';
 import ProfilePage from './pages/ProfilePage';
 import ProfileEditPage from './pages/ProfileEditPage';
+import AboutPage from './pages/AboutPage';
+import CommunityPage from './pages/CommunityPage';
 import ExperiencedUserDashboard from './pages/dashboard/ExperiencedUserDashboard';
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import RecruiterDashboard from './pages/dashboard/RecruiterDashboard';
@@ -38,9 +40,9 @@ function App() {
         <Route path="/profile" element={<Layout><ProfilePage /></Layout>} />
         <Route path="/profile/edit" element={<Layout><ProfileEditPage /></Layout>} />
 
-        {/* 추가 페이지들 (placeholder) */}
-        <Route path="/about" element={<Layout><div style={{padding: '2rem', textAlign: 'center'}}><h1>서비스 소개</h1><p>개발 예정</p></div></Layout>} />
-        <Route path="/community" element={<Layout><div style={{padding: '2rem', textAlign: 'center'}}><h1>커뮤니티</h1><p>개발 예정</p></div></Layout>} />
+        {/* 서비스 소개 & 커뮤니티 */}
+        <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+        <Route path="/community" element={<Layout><CommunityPage /></Layout>} />
       </Routes>
     </Router>
   );
