@@ -5,6 +5,7 @@ from app.models.user import User
 from app.models.profile import Profile
 from app.models.position import Position
 from app.models.application import Application
+from app.models.notification import Notification
 
 # MongoDB 클라이언트
 client = None
@@ -24,7 +25,8 @@ async def init_db():
             User,
             Profile,
             Position,
-            Application
+            Application,
+            Notification
         ]
     )
 

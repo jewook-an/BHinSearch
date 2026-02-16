@@ -13,12 +13,14 @@
 - [x] 프로필 CRUD API 구현 (완성도 계산 알고리즘 포함)
 - [x] 포지션 관리 API 구현 (필터링/검색 기능)
 - [x] 지원 관리 API 구현 (상태 추적)
+- [x] 파일 업로드 기능 구현 (이력서/자기소개서/프로필 이미지)
+- [x] 알림 시스템 구축 (지원/상태변경 알림)
 - [x] API 테스트 완료 (Swagger UI)
 
 🚀 **다음 작업**
-- [ ] 이력서/자기소개서 파일 업로드 기능
 - [ ] 프론트엔드-백엔드 연동
-- [ ] 실시간 알림 기능 (선택사항)
+- [ ] 실시간 알림 (WebSocket) 추가 (선택사항)
+- [ ] 이메일 알림 기능 (선택사항)
 
 ## 기술 스택
 
@@ -124,6 +126,28 @@ uvicorn main:app --reload
 - `PUT /api/v1/applications/{application_id}/status` - 지원 상태 변경
 - `GET /api/v1/applications/position/{position_id}/applicants` - 포지션 지원자 목록
 
+### 파일 업로드 (Files)
+
+- `POST /api/v1/files/upload-resume` - 이력서 업로드
+- `POST /api/v1/files/upload-cover-letter` - 자기소개서 업로드
+- `GET /api/v1/files/download-resume` - 내 이력서 다운로드
+- `GET /api/v1/files/download-cover-letter` - 내 자기소개서 다운로드
+- `GET /api/v1/files/download-resume/{user_id}` - 지원자 이력서 다운로드 (리크루터)
+- `GET /api/v1/files/download-cover-letter/{user_id}` - 지원자 자기소개서 (리크루터)
+- `DELETE /api/v1/files/delete-resume` - 내 이력서 삭제
+- `DELETE /api/v1/files/delete-cover-letter` - 내 자기소개서 삭제
+
+### 알림 (Notifications)
+
+- `GET /api/v1/notifications/` - 알림 목록 조회 (페이지네이션)
+- `GET /api/v1/notifications/unread-count` - 안 읽은 알림 개수
+- `GET /api/v1/notifications/stats` - 알림 통계
+- `GET /api/v1/notifications/{notification_id}` - 알림 상세
+- `PATCH /api/v1/notifications/{notification_id}/read` - 알림 읽음 표시
+- `PATCH /api/v1/notifications/read-all` - 모든 알림 읽음
+- `DELETE /api/v1/notifications/{notification_id}` - 알림 삭제
+- `DELETE /api/v1/notifications/` - 알림 전체 삭제
+
 ## 프로젝트 구조
 
 ```
@@ -132,6 +156,10 @@ backend/
 ├── requirements.txt        # 의존성
 ├── .env                    # 환경 변수
 ├── .env.example           # 환경 변수 예시
+├── uploads/               # 업로드된 파일 저장
+│   ├── resumes/           # 이력서
+│   ├── cover_letters/     # 자기소개서
+│   └── profile_images/    # 프로필 이미지
 └── app/
     ├── __init__.py
     ├── config.py          # 설정
@@ -140,16 +168,20 @@ backend/
     │   ├── user.py
     │   ├── profile.py
     │   ├── position.py
-    │   └── application.py
+    │   ├── application.py
+    │   └── notification.py
     ├── schemas/           # Pydantic 스키마
     │   ├── user.py
-    │   └── profile.py
+    │   ├── profile.py
+    │   └── notification.py
     ├── routers/           # API 라우터
     │   ├── auth.py
     │   ├── users.py
     │   ├── profiles.py
     │   ├── positions.py
-    │   └── applications.py
+    │   ├── applications.py
+    │   ├── files.py
+    │   └── notifications.py
     └── utils/             # 유틸리티
         └── auth.py        # 인증 헬퍼
 ```
@@ -171,6 +203,11 @@ backend/
 ### Application (지원)
 - 지원 현황 관리
 - 상태: pending|reviewing|interview|accepted|rejected
+
+### Notification (알림)
+- 사용자 알림 관리
+- 타입: 지원완료, 상태변경, 면접일정 등
+- 자동 알림 생성 (지원 시, 상태 변경 시)
 
 ## 인증 방식
 
