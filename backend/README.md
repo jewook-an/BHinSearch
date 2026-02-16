@@ -2,6 +2,24 @@
 
 보험업계 ATS 백엔드 서버 - FastAPI + MongoDB
 
+## 📊 프로젝트 현황
+
+✅ **완료된 작업**
+- [x] 백엔드 프로젝트 구조 생성
+- [x] FastAPI 서버 구축 및 설정
+- [x] MongoDB Atlas 클라우드 DB 연결
+- [x] JWT 인증 시스템 구현
+- [x] 회원가입/로그인 API 구현
+- [x] 프로필 CRUD API 구현 (완성도 계산 알고리즘 포함)
+- [x] 포지션 관리 API 구현 (필터링/검색 기능)
+- [x] 지원 관리 API 구현 (상태 추적)
+- [x] API 테스트 완료 (Swagger UI)
+
+🚀 **다음 작업**
+- [ ] 이력서/자기소개서 파일 업로드 기능
+- [ ] 프론트엔드-백엔드 연동
+- [ ] 실시간 알림 기능 (선택사항)
+
 ## 기술 스택
 
 - **FastAPI**: 고성능 웹 프레임워크
@@ -28,12 +46,20 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. MongoDB 설치 및 실행
+### 3. MongoDB 설정
 
-MongoDB가 로컬에서 실행 중이어야 합니다.
+**현재 MongoDB Atlas (클라우드) 사용 중**
 
+`.env` 파일에 이미 MongoDB Atlas 연결 문자열이 설정되어 있습니다.
+
+```env
+MONGODB_URL=mongodb+srv://bhinsearch_user:PASSWORD@bhinsearch-cluster.9cvdnxk.mongodb.net/?appName=bhinsearch-cluster
+```
+
+로컬 MongoDB 사용 시:
 - [MongoDB 설치 가이드](https://www.mongodb.com/try/download/community)
 - 기본 포트: 27017
+- `.env`의 MONGODB_URL을 `mongodb://localhost:27017`로 변경
 
 ### 4. 환경 변수 설정
 
@@ -49,16 +75,18 @@ SECRET_KEY=your-secret-key-here
 
 ```bash
 # 개발 모드 (자동 리로드)
-uvicorn main:app --reload
+uvicorn main:app --host 0.0.0.0 --port 8001 --reload
 
-# 또는
-python main.py
+# 또는 기본 포트 8000
+uvicorn main:app --reload
 ```
 
 서버가 실행되면:
-- API: http://localhost:8000
-- API 문서 (Swagger): http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- API: http://localhost:8001 (또는 8000)
+- API 문서 (Swagger): http://localhost:8001/docs
+- ReDoc: http://localhost:8001/redoc
+
+**현재 서버 상태**: ✅ 포트 8001에서 실행 중
 
 ## API 엔드포인트
 
@@ -162,7 +190,19 @@ headers = {"Authorization": f"Bearer {token}"}
 
 ## 테스트
 
-API 문서 (http://localhost:8000/docs)에서 직접 테스트 가능합니다.
+API 문서 (http://localhost:8001/docs)에서 직접 테스트 가능합니다.
+
+### Swagger UI에서 인증 테스트
+
+1. **회원가입**: `POST /api/v1/auth/register` 실행
+2. **Authorize 클릭**: 페이지 우측 상단의 🔒 버튼
+3. **로그인 정보 입력**:
+   - username: 이메일
+   - password: 비밀번호
+   - (client_id, client_secret는 비워두기)
+4. **Authorize** 후 Close
+5. 🔒 아이콘이 닫힌 상태가 되면 인증 완료!
+6. 이제 인증이 필요한 API 테스트 가능
 
 ## 프로덕션 배포 시 주의사항
 

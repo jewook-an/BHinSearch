@@ -12,7 +12,7 @@ from app.schemas.user import TokenData
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # OAuth2 스키마
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_PREFIX}/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_PREFIX}/auth/token")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """비밀번호 검증"""

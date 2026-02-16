@@ -37,6 +37,8 @@ class ProfileCreate(BaseModel):
     education: List[EducationSchema] = []
     certificates: List[CertificateSchema] = []
     skills: List[str] = []
+    resume_url: Optional[str] = None
+    cover_letter_url: Optional[str] = None
 
 class ProfileUpdate(BaseModel):
     profile_image: Optional[str] = None
@@ -50,6 +52,8 @@ class ProfileUpdate(BaseModel):
     education: Optional[List[EducationSchema]] = None
     certificates: Optional[List[CertificateSchema]] = None
     skills: Optional[List[str]] = None
+    resume_url: Optional[str] = None
+    cover_letter_url: Optional[str] = None
 
 # 프로필 응답
 class ProfileResponse(BaseModel):
@@ -66,6 +70,8 @@ class ProfileResponse(BaseModel):
     education: List[EducationSchema] = []
     certificates: List[CertificateSchema] = []
     skills: List[str] = []
+    resume_url: Optional[str] = None
+    cover_letter_url: Optional[str] = None
     profile_completeness: int
     applied_jobs_count: int
     saved_jobs_count: int

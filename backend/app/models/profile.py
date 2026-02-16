@@ -48,6 +48,10 @@ class Profile(Document):
     certificates: List[Certificate] = []
     skills: List[str] = []
 
+    # 파일 첨부
+    resume_url: Optional[str] = None
+    cover_letter_url: Optional[str] = None
+
     # 프로필 완성도
     profile_completeness: int = 0
 
