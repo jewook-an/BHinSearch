@@ -2,7 +2,13 @@
 
 보험업계 ATS 백엔드 서버 - FastAPI + MongoDB
 
-## 📊 프로젝트 현황
+## � 문서
+
+- **[배포 가이드](DEPLOYMENT.md)** - Render, Railway 등 클라우드 배포 방법
+- **API 문서**: http://localhost:8001/docs (로컬)
+- **배포된 API**: https://your-app.onrender.com/docs
+
+## �📊 프로젝트 현황
 
 ✅ **완료된 작업**
 - [x] 백엔드 프로젝트 구조 생성
@@ -241,14 +247,272 @@ API 문서 (http://localhost:8001/docs)에서 직접 테스트 가능합니다.
 5. 🔒 아이콘이 닫힌 상태가 되면 인증 완료!
 6. 이제 인증이 필요한 API 테스트 가능
 
-## 프로덕션 배포 시 주의사항
+## 🚀 배포 가이드
 
-1. `.env` 파일의 `SECRET_KEY`를 강력한 랜덤 값으로 변경
-2. CORS 설정 (`ALLOWED_ORIGINS`)을 프로덕션 도메인으로 제한
-3. MongoDB를 클라우드 서비스 (MongoDB Atlas 등)로 변경
-4. HTTPS 적용
-5. 로그 설정
-6. 에러 핸들링 강화
+### GitHub vs 실제 배포
+
+**GitHub에 코드를 올리는 것 ≠ 서버 배포**
+
+- **GitHub**: 소스코드 저장소 (코드 보관만 가능)
+- **서버 배포**: 실제로 서버를 실행시켜서 외부에서 접속 가능하게 만드는 것
+
+### 로컬 vs 배포 환경
+
+| 구분 | 로컬 개발 | 배포 후 |
+|------|-----------|---------|
+| 접속 URL | `http://localhost:8001` | `https://your-app.onrender.com` |
+| API 문서 | `http://localhost:8001/docs` | `https://your-app.onrender.com/docs` |
+| 데이터베이스 | MongoDB Atlas (이미 클라우드) | 동일 (MongoDB Atlas) |
+| 환경 변수 | `.env` 파일 | 호스팅 서비스의 환경변수 설정 |
+
+### 백엔드 배포 옵션
+
+#### 1. Railway (추천 ⭐)
+- 무료 플랜: $5 크레딧/월
+- Python FastAPI 지원 우수
+- 자동 HTTPS
+
+**배포 방법:**
+```bash
+# 1. Railway CLI 설치
+npm i -g @railway/cli
+
+# 2. 로그인
+railway login
+
+# 3. 프로젝트 초기화
+railway init
+
+# 4. 배포
+railway up
+```
+
+**환경 변수 설정:**
+```
+MONGODB_URL=mongodb+srv://...
+SECRET_KEY=your-secret-key
+ALLOWED_ORIGINS=["https://jewook-an.github.io"]
+```
+
+**배포 후 접속:**
+- Railway가 제공하는 URL: `https://your-project.up.railway.app`
+- API 문서: `https://your-project.up.railway.app/docs`
+
+#### 2. Render
+- 무료 플랜 제공 (제한적)
+- 자동 배포 지원
+
+**배포 방법:**
+1. [Render.com](https://render.com) 회원가입
+2. "New Web Service" 클릭
+3. GitHub 저장소 연결
+4. 설정:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. 환경 변수 추가 (MONGODB_URL, SECRET_KEY 등)
+6. Create Web Service
+
+**배포 후 접속:**
+- Render가 제공하는 URL: `https://your-app.onrender.com`
+- API 문서: `https://your-app.onrender.com/docs`
+
+#### 3. Heroku
+- 무료 플랜 폐지 (유료만 가능)
+- $7/월부터 시작
+
+**필요 파일:**
+1. `Procfile`:
+```
+web: uvicorn main:app --host 0.0.0.0 --port $PORT
+```
+
+2. `runtime.txt`:
+```
+python-3.10.12
+```
+
+#### 4. AWS EC2 / Azure / GCP
+- 완전한 제어 가능
+- 복잡한 설정 필요
+- 비용 발생 가능
+
+### 배포 후 테스트 방법
+
+**1. API 문서 접속**
+```
+https://your-deployed-url.com/docs
+```
+
+**2. Postman/Insomnia 사용**
+```
+POST https://your-deployed-url.com/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
+
+**3. curl 명령어**
+```bash
+# 회원가입
+curl -X POST https://your-app.com/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"test1234","name":"테스트"}'
+
+# 로그인
+curl -X POST https://your-app.com/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"test1234"}'
+```
+
+**4. 브라우저 개발자 도구**
+```javascript
+// 콘솔에서 테스트
+fetch('https://your-app.com/api/v1/auth/login', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({email: 'test@example.com', password: 'test1234'})
+})
+.then(r => r.json())
+.then(console.log)
+```
+
+### 프론트엔드 연동
+
+**GitHub Pages (jewook-an.github.io)와 연결 시:**
+
+1. **백엔드 CORS 설정 업데이트** (`.env`):
+```env
+ALLOWED_ORIGINS=["https://jewook-an.github.io","http://localhost:3000"]
+```
+
+2. **프론트엔드에서 API 호출**:
+```javascript
+// config.js
+const API_URL = process.env.NODE_ENV === 'production'
+  ? 'https://your-app.onrender.com/api/v1'
+  : 'http://localhost:8001/api/v1';
+
+// API 호출 예시
+fetch(`${API_URL}/auth/login`, {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({email, password})
+})
+```
+
+### 배포 체크리스트
+
+배포 전 확인사항:
+- [ ] `.env` 파일을 `.gitignore`에 추가 (보안)
+- [ ] `SECRET_KEY`를 강력한 랜덤 값으로 변경
+- [ ] `ALLOWED_ORIGINS`에 프론트엔드 도메인 추가
+- [ ] MongoDB Atlas 연결 문자열 확인
+- [ ] `requirements.txt` 업데이트됨
+- [ ] 모든 API 엔드포인트 로컬에서 테스트 완료
+
+배포 후 확인사항:
+- [ ] `https://your-app.com/docs` 접속 확인
+- [ ] 회원가입/로그인 테스트
+- [ ] 프론트엔드에서 API 호출 테스트
+- [ ] CORS 에러 없는지 확인
+- [ ] MongoDB 연결 확인
+
+### 로그 확인
+
+**Railway:**
+```bash
+railway logs
+```
+
+**Render:**
+- 대시보드에서 "Logs" 탭 확인
+
+**Heroku:**
+```bash
+heroku logs --tail
+```
+
+### 일반적인 배포 문제 해결
+
+**1. CORS 에러**
+```
+Access to fetch at '...' from origin '...' has been blocked by CORS policy
+```
+→ `.env`의 `ALLOWED_ORIGINS`에 프론트엔드 도메인 추가
+
+**2. MongoDB 연결 실패**
+```
+ServerSelectionTimeoutError: ...
+```
+→ MongoDB Atlas에서 Network Access에 `0.0.0.0/0` (모든 IP) 허용
+
+**3. 환경 변수 인식 안됨**
+→ 호스팅 서비스의 환경변수 설정 페이지에서 수동 입력 필요
+
+**4. Port 에러**
+```
+Error: Port 8001 is already in use
+```
+→ 배포 환경에서는 `PORT` 환경변수 사용:
+```python
+# main.py 마지막에
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    port = int(os.getenv("PORT", 8001))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
+```
+
+---
+
+## 🌐 프로덕션 배포
+
+### 빠른 시작 (Render - 무료)
+
+1. **Render.com 가입**: https://render.com
+2. **New Web Service** 생성
+3. **GitHub 저장소 연결**
+4. **설정**:
+   - Root Directory: `backend`
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+5. **환경 변수 추가** (`.env` 내용 복사)
+6. **Deploy** 클릭
+
+**배포 완료!** 🎉
+→ API 주소: `https://your-app.onrender.com/docs`
+
+### 자세한 배포 가이드
+
+**[📖 DEPLOYMENT.md](DEPLOYMENT.md) 문서를 참조하세요:**
+- Render, Railway, Vercel 배포 방법
+- 무료 플랜 비교
+- 배포 트러블슈팅
+- 모니터링 설정
+
+---
+
+## 🔗 관련 링크
+
+- **프론트엔드**: https://jewook-an.github.io/BHinSearch
+- **GitHub**: https://github.com/jewook-an/bhinsearch
+- **FastAPI 문서**: https://fastapi.tiangolo.com
+- **MongoDB Atlas**: https://www.mongodb.com/atlas
+
+---
+
+## 📞 문의
+
+프로젝트 관련 문의사항이 있으시면 Issue를 남겨주세요.
+
+---
+
+## 라이선스
+
+Private Project
 
 ## 라이선스
 
