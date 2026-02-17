@@ -2,15 +2,19 @@
   background-color: var(--bg-secondary);
   min-height: 100vh;
   padding: var(--spacing-xl) 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .positions-container {
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: var(--spacing-xl);
+  box-sizing: border-box;
 }
 
 .filter-sidebar {
@@ -19,6 +23,8 @@
 
 .positions-main {
   min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 .positions-header {
@@ -101,11 +107,11 @@
   }
 
   .filter-sidebar {
-    order: 2;
+    order: 1;
   }
 
   .positions-main {
-    order: 1;
+    order: 2;
   }
 }
 
@@ -120,5 +126,24 @@
 
   .positions-header h1 {
     font-size: var(--font-size-2xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .positions-page {
+    padding: var(--spacing-sm) 0;
+  }
+
+  .positions-container {
+    padding: 0 var(--spacing-sm);
+    gap: var(--spacing-md);
+  }
+
+  .positions-header h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .positions-list {
+    gap: var(--spacing-md);
   }
 }

@@ -1,10 +1,14 @@
+/* ===== Position Card - 반응형 카드 ===== */
 .position-card {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: var(--spacing-lg);
+  padding: clamp(12px, 3vw, 24px);
   transition: all 0.3s;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .position-card:hover {
@@ -13,15 +17,16 @@
   transform: translateY(-2px);
 }
 
+/* 카드 헤더 */
 .position-card-header {
   display: flex;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+  gap: clamp(8px, 2vw, 16px);
+  margin-bottom: clamp(8px, 2vw, 16px);
 }
 
 .company-logo {
-  width: 60px;
-  height: 60px;
+  width: clamp(40px, 8vw, 60px);
+  height: clamp(40px, 8vw, 60px);
   border-radius: var(--border-radius);
   overflow: hidden;
   flex-shrink: 0;
@@ -40,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: clamp(1.2rem, 4vw, 2rem);
 }
 
 .company-info {
@@ -49,9 +54,10 @@
 }
 
 .position-title {
-  font-size: var(--font-size-lg);
+  font-size: clamp(0.95rem, 2.5vw, 1.125rem);
   font-weight: 600;
   margin-bottom: var(--spacing-xs);
+  word-break: keep-all;
 }
 
 .position-title a {
@@ -65,15 +71,16 @@
 
 .company-name {
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
 }
 
+/* 포지션 상세 정보 - flexbox wrap으로 유동 레이아웃 */
 .position-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
-  padding: var(--spacing-md) 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(4px, 1.5vw, 12px) clamp(12px, 3vw, 24px);
+  margin-bottom: clamp(8px, 2vw, 16px);
+  padding: clamp(8px, 2vw, 16px) 0;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -82,35 +89,41 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  font-size: var(--font-size-sm);
+  font-size: clamp(0.8rem, 2vw, 0.875rem);
   color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .detail-icon {
   font-size: 1rem;
+  flex-shrink: 0;
 }
 
+/* 태그 */
 .position-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-md);
+  gap: clamp(4px, 1vw, 8px);
+  margin-bottom: clamp(8px, 2vw, 16px);
 }
 
 .tag {
   background-color: var(--bg-secondary);
   color: var(--text-secondary);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: clamp(2px, 0.5vw, 4px) clamp(6px, 1.5vw, 12px);
   border-radius: 12px;
-  font-size: var(--font-size-sm);
+  font-size: clamp(0.7rem, 1.8vw, 0.875rem);
   font-weight: 500;
+  white-space: nowrap;
 }
 
+/* 푸터 */
 .position-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--spacing-md);
+  flex-wrap: wrap;
 }
 
 .position-meta {
@@ -121,18 +134,19 @@
 
 .posted-date {
   color: var(--text-light);
-  font-size: var(--font-size-sm);
+  font-size: clamp(0.7rem, 1.8vw, 0.875rem);
 }
 
 .stats {
   color: var(--text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: clamp(0.7rem, 1.8vw, 0.875rem);
 }
 
 .position-actions {
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+  flex-shrink: 0;
 }
 
 .btn-bookmark {
@@ -177,18 +191,16 @@
   background-color: #1d4ed8;
 }
 
-@media (max-width: 768px) {
-  .position-details {
-    grid-template-columns: 1fr;
-  }
-
+/* ===== 모바일 반응형 ===== */
+@media (max-width: 640px) {
   .position-footer {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--spacing-sm);
   }
 
   .position-actions {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 }

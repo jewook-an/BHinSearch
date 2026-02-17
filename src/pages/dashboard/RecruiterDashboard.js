@@ -59,7 +59,7 @@ const RecruiterDashboard = () => {
             </div>
 
             <div className="position-list">
-              <div className="position-card">
+              <div className="recruiter-position-card">
                 <div className="position-info">
                   <h3>보험계리사</h3>
                   <div className="position-meta">
@@ -78,7 +78,7 @@ const RecruiterDashboard = () => {
                 </div>
               </div>
 
-              <div className="position-card">
+              <div className="recruiter-position-card">
                 <div className="position-info">
                   <h3>언더라이터</h3>
                   <div className="position-meta">
@@ -97,7 +97,7 @@ const RecruiterDashboard = () => {
                 </div>
               </div>
 
-              <div className="position-card">
+              <div className="recruiter-position-card">
                 <div className="position-info">
                   <h3>손해사정사</h3>
                   <div className="position-meta">
