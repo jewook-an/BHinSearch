@@ -103,7 +103,7 @@ const CommunityPage = () => {
       <div className="container">
         <div className="community-content">
           {/* Main Content */}
-          <div className="main-content">
+          <div className="community-main">
             {/* Category Tabs */}
             <div className="category-tabs">
               {categories.map(category => (

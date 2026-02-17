@@ -1,7 +1,10 @@
 .footer {
   background-color: var(--bg-dark);
   color: var(--text-light);
-  margin-top: var(--spacing-2xl);
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: auto;
+  padding-top: var(--spacing-2xl);
 }
 
 .footer-container {
@@ -56,4 +59,62 @@
 .footer-bottom p {
   color: var(--text-light);
   font-size: var(--font-size-sm);
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .footer {
+    margin-top: var(--spacing-lg);
+  }
+
+  .footer-container {
+    padding: var(--spacing-lg) var(--spacing-md);
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .footer-section {
+    text-align: center;
+  }
+
+  .footer-section h3,
+  .footer-section h4 {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .footer-bottom {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    margin-top: var(--spacing-md);
+  }
+
+  .footer-container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    gap: var(--spacing-md);
+  }
+
+  .footer-section h3 {
+    font-size: var(--font-size-base);
+  }
+
+  .footer-section h4 {
+    font-size: var(--font-size-sm);
+  }
+
+  .footer-section p,
+  .footer-section ul li a {
+    font-size: var(--font-size-sm);
+  }
+
+  .footer-bottom {
+    padding: var(--spacing-sm);
+  }
+
+  .footer-bottom p {
+    font-size: 0.75rem;
+  }
 }
