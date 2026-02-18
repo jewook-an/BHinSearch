@@ -7,12 +7,16 @@ class User(Document):
     """사용자 모델"""
 
     email: EmailStr = Field(..., unique=True, index=True)
-    hashed_password: str
+    hashed_password: Optional[str] = None  # 소셜 로그인은 비밀번호 없음
     name: str
     phone: Optional[str] = None
     user_type: str = Field(..., description="experienced|recruiter|admin|guest")
     is_active: bool = True
     is_verified: bool = False
+    # 소셜 로그인 필드
+    social_provider: Optional[str] = None  # google | kakao | None
+    social_id: Optional[str] = None        # 소셜 서비스의 고유 ID
+    profile_image: Optional[str] = None    # 소셜 프로필 이미지 URL
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 

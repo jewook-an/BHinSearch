@@ -37,6 +37,16 @@
   margin-bottom: var(--spacing-lg);
 }
 
+.login-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
 .form-group {
   margin-bottom: var(--spacing-lg);
 }

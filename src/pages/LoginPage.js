@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import './LoginPage.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001/api/v1';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -9,6 +12,8 @@ const LoginPage = () => {
     password: '',
     rememberMe: false
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -18,12 +23,49 @@ const LoginPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: 실제 로그인 로직 구현
-    console.log('Login attempt:', formData);
-    // 임시로 대시보드로 리다이렉트
-    navigate('/dashboard');
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '로그인에 실패했습니다');
+      localStorage.setItem('access_token', data.access_token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: credentialResponse.credential }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Google 로그인에 실패했습니다');
+      localStorage.setItem('access_token', data.access_token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError('Google 로그인에 실패했습니다. 다시 시도해주세요.');
   };
 
   return (
@@ -34,6 +76,9 @@ const LoginPage = () => {
           <p className="login-subtitle">보험업계 ATS에 오신 것을 환영합니다</p>
 
           <form onSubmit={handleSubmit} className="login-form">
+            {error && (
+              <div className="login-error">{error}</div>
+            )}
             <div className="form-group">
               <label htmlFor="email">이메일</label>
               <input
@@ -76,8 +121,8 @@ const LoginPage = () => {
               </Link>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-full">
-              로그인
+            <button type="submit" className="btn btn-primary btn-full" disabled={loading}>
+              {loading ? '로그인 중...' : '로그인'}
             </button>
           </form>
 
@@ -86,9 +131,15 @@ const LoginPage = () => {
           </div>
 
           <div className="social-login">
-            <button className="btn btn-social btn-google">
-              Google로 로그인
-            </button>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              width="100%"
+              text="signin_with"
+              shape="rectangular"
+              logo_alignment="left"
+              locale="ko"
+            />
             <button className="btn btn-social btn-kakao">
               카카오톡으로 로그인
             </button>

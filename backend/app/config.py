@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     UPLOAD_DIR: str = "./uploads"
     MAX_FILE_SIZE: int = 10 * 1024 * 1024  # 10MB
 
+    # Google OAuth
+    GOOGLE_CLIENT_ID: str = ""
+
     class Config:
         env_file = ".env"
         case_sensitive = True

@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
@@ -18,6 +19,7 @@ import './App.css';
 
 function App() {
   return (
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ''}>
     <Router basename={process.env.PUBLIC_URL}>
       <ScrollToTop />
       <Routes>
@@ -47,6 +49,7 @@ function App() {
         <Route path="/community" element={<Layout><CommunityPage /></Layout>} />
       </Routes>
     </Router>
+    </GoogleOAuthProvider>
   );
 }
 
