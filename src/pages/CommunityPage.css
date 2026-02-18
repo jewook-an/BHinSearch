@@ -405,7 +405,8 @@ Flex 아이템의 기본 order는 0인데, .main-content에 order: 1이 적용�
   }
 
   .community-content {
-    padding: 1.5rem 0.5rem;
+    padding: 1rem 0.5rem;
+    gap: 1.5rem;
   }
 
   .category-tabs {
@@ -413,18 +414,35 @@ Flex 아이템의 기본 order는 0인데, .main-content에 order: 1이 적용�
     flex-wrap: nowrap;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 1.5rem;
+    padding-bottom: 0.25rem;
   }
 
   .category-tab {
     flex-shrink: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
   }
 
   .post-card {
     padding: 1rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .post-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .post-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .post-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
   }
 
   .community-sidebar {
@@ -433,6 +451,11 @@ Flex 아이템의 기본 order는 0인데, .main-content에 order: 1이 적용�
 
   .sidebar-card {
     min-width: unset;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .pagination-pages {
@@ -446,6 +469,60 @@ Flex 아이템의 기본 order는 0인데, .main-content에 order: 1이 적용�
   }
 
   .posts-container {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .community-header {
+    padding: 2rem 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .community-content {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .category-tab {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    min-height: 36px;
+  }
+
+  .post-card {
+    padding: 0.75rem;
+  }
+
+  .post-title {
+    font-size: 0.9rem;
+  }
+
+  .category-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .view-count {
+    font-size: 0.8rem;
+  }
+
+  .post-footer {
+    font-size: 0.8rem;
+  }
+
+  .sidebar-card {
     padding: 1rem;
+  }
+
+  .posts-container {
+    padding: 0.5rem;
   }
 }

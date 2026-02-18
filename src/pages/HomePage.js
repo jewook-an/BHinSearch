@@ -8,7 +8,7 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">보험업계 전문 채용관리 솔루션111</h1>
+          <h1 className="hero-title">보험업계 전문 채용관리 솔루션</h1>
           <p className="hero-subtitle">
             보험업계 경력자와 기업을 연결하는 스마트한 ATS 플랫폼
           </p>

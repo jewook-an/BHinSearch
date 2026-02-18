@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
@@ -13,18 +14,18 @@ const Footer = () => {
         <div className="footer-section">
           <h4>서비스</h4>
           <ul>
-            <li><a href="/positions">포지션 검색</a></li>
-            <li><a href="/about">서비스 소개</a></li>
-            <li><a href="/faq">FAQ</a></li>
+            <li><Link to="/positions">포지션 검색</Link></li>
+            <li><Link to="/about">서비스 소개</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
           </ul>
         </div>
 
         <div className="footer-section">
           <h4>고객지원</h4>
           <ul>
-            <li><a href="/support">고객센터</a></li>
-            <li><a href="/terms">이용약관</a></li>
-            <li><a href="/privacy">개인정보처리방침</a></li>
+            <li><Link to="/support">고객센터</Link></li>
+            <li><Link to="/terms">이용약관</Link></li>
+            <li><Link to="/privacy">개인정보처리방침</Link></li>
           </ul>
         </div>
 
