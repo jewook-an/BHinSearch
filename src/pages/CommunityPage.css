@@ -356,7 +356,18 @@
   color: rgba(255, 255, 255, 0.95);
 }
 
-/* Responsive Design */
+/*
+# Responsive Design
+Flex 아이템의 기본 order는 0인데, .main-content에 order: 1이 적용되면:
+  - Header (order: 0) → 첫 번째
+  - Footer (order: 0) → 두 번째
+  - Main content (order: 1) → 세 번째
+이렇게 Footer가 Main 위로 올라갑니다.
+> 대시보드 CSS도 확인 필요.
+# 수정내용
+1. CommunityPage.css:367 — .main-content → .community-main으로 셀렉터 수정 (올바른 타겟으로)
+2. index.css:22 — .main-content에 order: 0 !important 추가 (향후 같은 문제 재발 방지)
+*/
 @media (max-width: 1024px) {
   .community-content {
     grid-template-columns: 1fr;
