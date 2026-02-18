@@ -13,11 +13,13 @@ import CommunityPage from './pages/CommunityPage';
 import ExperiencedUserDashboard from './pages/dashboard/ExperiencedUserDashboard';
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import RecruiterDashboard from './pages/dashboard/RecruiterDashboard';
+import ScrollToTop from './components/common/ScrollToTop';
 import './App.css';
 
 function App() {
   return (
     <Router basename={process.env.PUBLIC_URL}>
+      <ScrollToTop />
       <Routes>
         {/* 레이아웃이 있는 페이지들 */}
         <Route path="/" element={<Layout><HomePage /></Layout>} />
