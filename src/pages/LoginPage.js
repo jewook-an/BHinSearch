@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import './LoginPage.css';
@@ -14,6 +14,15 @@ const LoginPage = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // 카카오 SDK 초기화
+  useEffect(() => {
+    const kakaoKey = process.env.REACT_APP_KAKAO_JS_KEY;
+    if (window.Kakao && !window.Kakao.isInitialized() && kakaoKey) {
+      window.Kakao.init(kakaoKey);
+      console.log('Kakao SDK initialized:', window.Kakao.isInitialized());
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -82,6 +91,69 @@ const LoginPage = () => {
 
   const handleGoogleError = () => {
     setError('Google 로그인에 실패했습니다. 다시 시도해주세요.');
+  };
+
+  // 카카오 로그인 처리
+  const handleKakaoLogin = () => {
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      setError('카카오 SDK가 초기화되지 않았습니다. 페이지를 새로고침 해주세요.');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
+
+    window.Kakao.Auth.login({
+      success: async (authObj) => {
+        try {
+          // 카카오 사용자 정보 가져오기
+          window.Kakao.API.request({
+            url: '/v2/user/me',
+            success: async (userInfo) => {
+              try {
+                const kakaoAccount = userInfo.kakao_account || {};
+                const profile = kakaoAccount.profile || {};
+
+                // 백엔드로 카카오 사용자 정보 전송
+                const res = await fetch(`${API_URL}/auth/kakao`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    access_token: authObj.access_token,
+                    email: kakaoAccount.email || null,
+                    name: profile.nickname || null,
+                    picture: profile.profile_image_url || null,
+                    kakao_id: String(userInfo.id),
+                  }),
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || '카카오 로그인에 실패했습니다');
+                localStorage.setItem('access_token', data.access_token);
+                await fetchUserInfo(data.access_token);
+                navigate('/dashboard');
+              } catch (err) {
+                setError(err.message);
+              } finally {
+                setLoading(false);
+              }
+            },
+            fail: (err) => {
+              console.error('카카오 사용자 정보 요청 실패:', err);
+              setError('카카오 사용자 정보를 가져오는데 실패했습니다.');
+              setLoading(false);
+            },
+          });
+        } catch (err) {
+          setError(err.message);
+          setLoading(false);
+        }
+      },
+      fail: (err) => {
+        console.error('카카오 로그인 실패:', err);
+        setError('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
+        setLoading(false);
+      },
+    });
   };
 
   const googleLogin = useGoogleLogin({
@@ -198,7 +270,15 @@ const LoginPage = () => {
               </svg>
               Google로 로그인
             </button>
-            <button className="btn btn-social btn-kakao">
+            <button
+              className="btn btn-social btn-kakao"
+              type="button"
+              onClick={handleKakaoLogin}
+              disabled={loading}
+            >
+              <svg className="kakao-icon" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="#000000" d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67-.15.53-.96 3.41-1 3.58 0 .05.02.1.06.13a.12.12 0 00.1.01c.16-.02 2.6-1.72 3.56-2.4.85.12 1.73.18 2.62.18 5.52 0 10-3.58 10-7.94S17.52 3 12 3z"/>
+              </svg>
               카카오톡으로 로그인
             </button>
           </div>

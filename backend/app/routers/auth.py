@@ -22,6 +22,14 @@ class GoogleLoginRequest(BaseModel):
     picture: Optional[str] = None
     sub: Optional[str] = None  # Google 사용자 고유 ID
 
+# 카카오 로그인 요청 스키마
+class KakaoLoginRequest(BaseModel):
+    access_token: str  # 카카오 access token
+    email: Optional[str] = None
+    name: Optional[str] = None
+    picture: Optional[str] = None
+    kakao_id: str  # 카카오 사용자 고유 ID
+
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserRegister):
     """회원가입"""
@@ -142,6 +150,67 @@ async def google_login(request: GoogleLoginRequest):
             name=name,
             social_provider="google",
             social_id=google_user_id,
+            profile_image=picture,
+            user_type="experienced",
+            is_verified=True,
+        )
+        await user.insert()
+
+    # JWT 발급
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": str(user.id), "email": user.email},
+        expires_delta=access_token_expires
+    )
+
+    return Token(access_token=access_token, token_type="bearer")
+
+
+@router.post("/kakao", response_model=Token)
+async def kakao_login(request: KakaoLoginRequest):
+    """카카오 소셜 로그인"""
+
+    kakao_id = request.kakao_id
+    email = request.email
+    name = request.name
+    picture = request.picture
+
+    if not kakao_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="카카오 사용자 ID를 가져올 수 없습니다"
+        )
+
+    # 1) 소셜 ID로 기존 사용자 조회
+    user = await User.find_one(
+        User.social_provider == "kakao",
+        User.social_id == kakao_id
+    )
+
+    if not user and email:
+        # 2) 같은 이메일 사용자가 있으면 연동
+        user = await User.find_one(User.email == email)
+
+    if user:
+        # 기존 사용자: 소셜 정보 업데이트
+        user.social_provider = "kakao"
+        user.social_id = kakao_id
+        if name and not user.name:
+            user.name = name
+        if picture:
+            user.profile_image = picture
+        user.updated_at = datetime.utcnow()
+        await user.save()
+    else:
+        # 신규 사용자: 자동 회원가입
+        # 카카오는 이메일이 없을 수 있으므로 대체 이메일 생성
+        user_email = email if email else f"kakao_{kakao_id}@kakao.user"
+        user = User(
+            email=user_email,
+            hashed_password=None,
+            name=name or f"카카오사용자_{kakao_id[:6]}",
+            social_provider="kakao",
+            social_id=kakao_id,
             profile_image=picture,
             user_type="experienced",
             is_verified=True,
