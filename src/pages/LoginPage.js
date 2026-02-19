@@ -93,7 +93,46 @@ const LoginPage = () => {
     setError('Google 로그인에 실패했습니다. 다시 시도해주세요.');
   };
 
-  // 카카오 로그인 처리
+  // 카카오 로그인 콜백 처리 (리다이렉트 후 ?code= 파라미터 감지)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const kakaoCode = urlParams.get('code');
+
+    if (kakaoCode) {
+      // URL에서 code 파라미터 제거
+      window.history.replaceState({}, document.title, window.location.pathname);
+      handleKakaoCallback(kakaoCode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 카카오 인가코드를 백엔드로 전송
+  const handleKakaoCallback = async (code) => {
+    setError('');
+    setLoading(true);
+    try {
+      const redirectUri = window.location.origin + '/BHinSearch/login';
+      const res = await fetch(`${API_URL}/auth/kakao`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: code,
+          redirect_uri: redirectUri,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || '카카오 로그인에 실패했습니다');
+      localStorage.setItem('access_token', data.access_token);
+      await fetchUserInfo(data.access_token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 카카오 로그인 버튼 클릭 → 카카오 로그인 페이지로 리다이렉트
   const handleKakaoLogin = () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) {
       setError('카카오 SDK가 초기화되지 않았습니다. 페이지를 새로고침 해주세요.');
@@ -101,58 +140,9 @@ const LoginPage = () => {
     }
 
     setError('');
-    setLoading(true);
-
-    window.Kakao.Auth.login({
-      success: async (authObj) => {
-        try {
-          // 카카오 사용자 정보 가져오기
-          window.Kakao.API.request({
-            url: '/v2/user/me',
-            success: async (userInfo) => {
-              try {
-                const kakaoAccount = userInfo.kakao_account || {};
-                const profile = kakaoAccount.profile || {};
-
-                // 백엔드로 카카오 사용자 정보 전송
-                const res = await fetch(`${API_URL}/auth/kakao`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    access_token: authObj.access_token,
-                    email: kakaoAccount.email || null,
-                    name: profile.nickname || null,
-                    picture: profile.profile_image_url || null,
-                    kakao_id: String(userInfo.id),
-                  }),
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.detail || '카카오 로그인에 실패했습니다');
-                localStorage.setItem('access_token', data.access_token);
-                await fetchUserInfo(data.access_token);
-                navigate('/dashboard');
-              } catch (err) {
-                setError(err.message);
-              } finally {
-                setLoading(false);
-              }
-            },
-            fail: (err) => {
-              console.error('카카오 사용자 정보 요청 실패:', err);
-              setError('카카오 사용자 정보를 가져오는데 실패했습니다.');
-              setLoading(false);
-            },
-          });
-        } catch (err) {
-          setError(err.message);
-          setLoading(false);
-        }
-      },
-      fail: (err) => {
-        console.error('카카오 로그인 실패:', err);
-        setError('카카오 로그인에 실패했습니다. 다시 시도해주세요.');
-        setLoading(false);
-      },
+    window.Kakao.Auth.authorize({
+      redirectUri: window.location.origin + '/BHinSearch/login',
+      scope: 'profile_nickname,profile_image,account_email',
     });
   };
 

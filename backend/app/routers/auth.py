@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime
 from typing import Optional
+import httpx
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
@@ -24,11 +25,8 @@ class GoogleLoginRequest(BaseModel):
 
 # 카카오 로그인 요청 스키마
 class KakaoLoginRequest(BaseModel):
-    access_token: str  # 카카오 access token
-    email: Optional[str] = None
-    name: Optional[str] = None
-    picture: Optional[str] = None
-    kakao_id: str  # 카카오 사용자 고유 ID
+    code: str  # 카카오 인가 코드
+    redirect_uri: str  # 프론트엔드 redirect URI
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserRegister):
@@ -168,12 +166,45 @@ async def google_login(request: GoogleLoginRequest):
 
 @router.post("/kakao", response_model=Token)
 async def kakao_login(request: KakaoLoginRequest):
-    """카카오 소셜 로그인"""
+    """카카오 소셜 로그인 (인가코드 방식)"""
 
-    kakao_id = request.kakao_id
-    email = request.email
-    name = request.name
-    picture = request.picture
+    # 1) 인가 코드 → 액세스 토큰 교환
+    token_url = "https://kauth.kakao.com/oauth/token"
+    token_data = {
+        "grant_type": "authorization_code",
+        "client_id": settings.KAKAO_REST_API_KEY,
+        "redirect_uri": request.redirect_uri,
+        "code": request.code,
+    }
+
+    async with httpx.AsyncClient() as client:
+        token_res = await client.post(token_url, data=token_data)
+        token_json = token_res.json()
+
+    if "access_token" not in token_json:
+        error_desc = token_json.get("error_description", "카카오 토큰 교환 실패")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"카카오 인증 실패: {error_desc}"
+        )
+
+    kakao_access_token = token_json["access_token"]
+
+    # 2) 액세스 토큰 → 사용자 정보 조회
+    user_info_url = "https://kapi.kakao.com/v2/user/me"
+    async with httpx.AsyncClient() as client:
+        user_res = await client.get(
+            user_info_url,
+            headers={"Authorization": f"Bearer {kakao_access_token}"}
+        )
+        user_info = user_res.json()
+
+    kakao_id = str(user_info.get("id", ""))
+    kakao_account = user_info.get("kakao_account", {})
+    profile = kakao_account.get("profile", {})
+    email = kakao_account.get("email")
+    name = profile.get("nickname")
+    picture = profile.get("profile_image_url")
 
     if not kakao_id:
         raise HTTPException(
@@ -181,14 +212,14 @@ async def kakao_login(request: KakaoLoginRequest):
             detail="카카오 사용자 ID를 가져올 수 없습니다"
         )
 
-    # 1) 소셜 ID로 기존 사용자 조회
+    # 3) 소셜 ID로 기존 사용자 조회
     user = await User.find_one(
         User.social_provider == "kakao",
         User.social_id == kakao_id
     )
 
     if not user and email:
-        # 2) 같은 이메일 사용자가 있으면 연동
+        # 4) 같은 이메일 사용자가 있으면 연동
         user = await User.find_one(User.email == email)
 
     if user:

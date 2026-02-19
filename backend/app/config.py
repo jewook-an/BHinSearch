@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     # Google OAuth
     GOOGLE_CLIENT_ID: str = ""
 
+    # Kakao OAuth
+    KAKAO_REST_API_KEY: str = ""
+
     class Config:
         env_file = ".env"
         case_sensitive = True
