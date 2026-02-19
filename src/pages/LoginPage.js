@@ -78,12 +78,12 @@ const LoginPage = () => {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
         const userInfo = await userInfoRes.json();
-        
+
         // 백엔드로 사용자 정보 전송
         const res = await fetch(`${API_URL}/auth/google`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             credential: tokenResponse.access_token,
             email: userInfo.email,
             name: userInfo.name,
@@ -167,9 +167,9 @@ const LoginPage = () => {
           </div>
 
           <div className="social-login">
-            <button 
-              className="btn btn-social btn-google" 
-              type="button" 
+            <button
+              className="btn btn-social btn-google"
+              type="button"
               onClick={() => googleLogin()}
               disabled={loading}
             >
