@@ -1,8 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // 로그인 상태 확인
+    const token = localStorage.getItem('access_token');
+    setIsLoggedIn(!!token);
+
+    // storage 이벤트로 다른 탭에서의 로그인/로그아웃 감지
+    const handleStorageChange = () => {
+      const token = localStorage.getItem('access_token');
+      setIsLoggedIn(!!token);
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+
   return (
     <header className="header">
       <div className="header-container">
@@ -18,10 +41,15 @@ const Header = () => {
         </nav>
 
         <div className="auth-buttons">
-          {/* 실제로는 로그인 상태에 따라 조건부 렌더링 */}
           <Link to="/dashboard" className="btn btn-outline">대시보드</Link>
-          <Link to="/login" className="btn btn-outline">로그인</Link>
-          <Link to="/register" className="btn btn-primary">회원가입</Link>
+          {isLoggedIn ? (
+            <button onClick={handleLogout} className="btn btn-outline">로그아웃</button>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-outline">로그인</Link>
+              <Link to="/register" className="btn btn-primary">회원가입</Link>
+            </>
+          )}
         </div>
       </div>
     </header>

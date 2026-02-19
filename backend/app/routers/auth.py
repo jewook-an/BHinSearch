@@ -1,4 +1,5 @@
 from datetime import timedelta, datetime
+from typing import Optional
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel
@@ -10,14 +11,16 @@ from app.utils.auth import (
     create_access_token
 )
 from app.config import settings
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
 
 router = APIRouter()
 
 # Google 로그인 요청 스키마
 class GoogleLoginRequest(BaseModel):
-    credential: str  # Google이 발급한 ID 토큰 (JWT)
+    credential: str  # Google access token 또는 ID 토큰
+    email: Optional[str] = None
+    name: Optional[str] = None
+    picture: Optional[str] = None
+    sub: Optional[str] = None  # Google 사용자 고유 ID
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserRegister):
@@ -106,31 +109,13 @@ async def login_with_form(form_data: OAuth2PasswordRequestForm = Depends()):
 
 @router.post("/google", response_model=Token)
 async def google_login(request: GoogleLoginRequest):
-    """Google 소셜 로그인"""
+    """Google 소셜 로그인 (useGoogleLogin 방식)"""
 
-    if not settings.GOOGLE_CLIENT_ID:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Google OAuth가 설정되지 않았습니다 (GOOGLE_CLIENT_ID 누락)"
-        )
-
-    try:
-        # Google ID 토큰 검증
-        idinfo = id_token.verify_oauth2_token(
-            request.credential,
-            google_requests.Request(),
-            settings.GOOGLE_CLIENT_ID
-        )
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"유효하지 않은 Google 토큰입니다: {str(e)}"
-        )
-
-    google_user_id = idinfo.get("sub")
-    email = idinfo.get("email")
-    name = idinfo.get("name", email.split("@")[0])
-    picture = idinfo.get("picture")
+    # 프론트엔드에서 전달한 사용자 정보 사용
+    email = request.email
+    name = request.name
+    picture = request.picture
+    google_user_id = request.sub
 
     if not email:
         raise HTTPException(

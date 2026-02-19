@@ -165,12 +165,22 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: var(--font-size-base);
+  height: 48px;
 }
 
 .btn-google {
   background-color: white;
   border: 1px solid var(--border-color);
   color: var(--text-primary);
+}
+
+.google-icon {
+  flex-shrink: 0;
 }
 
 .btn-google:hover {
