@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './ExperiencedUserDashboard.css';
 
 const ExperiencedUserDashboard = () => {
+  const [user, setUser] = useState(null);
   const [stats] = useState({
     appliedJobs: 5,
     savedJobs: 12,
@@ -10,11 +11,48 @@ const ExperiencedUserDashboard = () => {
     interviews: 2
   });
 
+  useEffect(() => {
+    // localStorage에서 사용자 정보 가져오기
+    const userInfo = localStorage.getItem('user_info');
+    if (userInfo) {
+      setUser(JSON.parse(userInfo));
+    }
+  }, []);
+
+  // 가입일 포맷팅
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>대시보드</h1>
-        <p>안녕하세요, 홍길동님!</p>
+        <div className="user-welcome">
+          {user?.profile_image ? (
+            <img src={user.profile_image} alt="프로필" className="user-avatar" />
+          ) : (
+            <div className="user-avatar-placeholder">
+              {user?.name?.charAt(0) || '?'}
+            </div>
+          )}
+          <div className="user-info">
+            <h1>대시보드</h1>
+            <p>안녕하세요, {user?.name || '회원'}님!</p>
+            {user?.social_provider && (
+              <span className="login-badge">
+                {user.social_provider === 'google' ? '🔵 Google' : '🟡 Kakao'} 로그인
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="user-meta">
+          <p className="user-email">{user?.email}</p>
+          {user?.created_at && (
+            <p className="user-since">가입일: {formatDate(user.created_at)}</p>
+          )}
+        </div>
       </div>
 
       <div className="stats-grid">

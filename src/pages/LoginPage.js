@@ -23,6 +23,21 @@ const LoginPage = () => {
     }));
   };
 
+  // 로그인 성공 후 사용자 정보 가져오기
+  const fetchUserInfo = async (token) => {
+    try {
+      const res = await fetch(`${API_URL}/users/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const userInfo = await res.json();
+        localStorage.setItem('user_info', JSON.stringify(userInfo));
+      }
+    } catch (err) {
+      console.error('사용자 정보 가져오기 실패:', err);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -36,6 +51,7 @@ const LoginPage = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || '로그인에 실패했습니다');
       localStorage.setItem('access_token', data.access_token);
+      await fetchUserInfo(data.access_token);
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);
@@ -94,6 +110,7 @@ const LoginPage = () => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.detail || 'Google 로그인에 실패했습니다');
         localStorage.setItem('access_token', data.access_token);
+        await fetchUserInfo(data.access_token);
         navigate('/dashboard');
       } catch (err) {
         setError(err.message);

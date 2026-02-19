@@ -33,6 +33,8 @@ class UserResponse(BaseModel):
     phone: Optional[str] = None
     user_type: str
     is_active: bool
+    profile_image: Optional[str] = None
+    social_provider: Optional[str] = None
     created_at: datetime
 
     class Config:

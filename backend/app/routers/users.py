@@ -15,6 +15,8 @@ async def get_current_user_info(current_user: User = Depends(get_current_active_
         phone=current_user.phone,
         user_type=current_user.user_type,
         is_active=current_user.is_active,
+        profile_image=current_user.profile_image,
+        social_provider=current_user.social_provider,
         created_at=current_user.created_at
     )
 
