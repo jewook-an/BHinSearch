@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/166.711ff39a.chunk.js","mappings":"6HAGA,MAAMA,GAAaC,E,OAAAA,IAAiC,aAAc,CAChEC,IAAKA,IAAM,6BAAgBC,KAAMC,GAAM,IAAIA,EAAEC,gB","sources":["../../../src/index.ts"],"names":["GoogleAuth","registerPlugin","web","then","m","GoogleAuthWeb"],"sourceRoot":""}
