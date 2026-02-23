@@ -17,7 +17,13 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: List[str] = [
         "http://localhost:3000",
         "http://localhost:3000/BHinSearch",
-        "https://jewook-an.github.io"
+        "https://jewook-an.github.io",
+        # Capacitor 모바일 앱 (Android / iOS)
+        "capacitor://localhost",
+        "ionic://localhost",
+        "https://localhost",
+        "http://localhost",
+        "http://localhost:8080",
     ]
 
     # API

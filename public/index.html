@@ -37,6 +37,20 @@
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
 
+    <!-- 네이티브 앱 카카오 로그인 트램폴린 리다이렉트 -->
+    <!-- React 로드 전에 실행: state=native_app이면 커스텀 스킴으로 즉시 리다이렉트하여 앱으로 복귀 -->
+    <script type="text/javascript">
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var code = params.get('code');
+        var state = params.get('state');
+        if (code && state === 'native_app') {
+          // 카카오 인증 코드를 커스텀 스킴을 통해 네이티브 앱으로 전달
+          window.location.href = 'kakaod5027a40fdd5e38b501bacc2b55557fe://oauth?code=' + encodeURIComponent(code);
+        }
+      })();
+    </script>
+
     <!-- Kakao JavaScript SDK -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js" crossorigin="anonymous"></script>
 

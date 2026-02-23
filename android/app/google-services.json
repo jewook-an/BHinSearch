@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "36041664943",
+    "project_id": "bhinsearch",
+    "storage_bucket": "bhinsearch.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36041664943:android:99d6c8ab2bbb95187ce75a",
+        "android_client_info": {
+          "package_name": "com.bhinsearch.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "36041664943-83vrbe08pdalj9r22b12jvr1t7fminj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByesvXRsghNg16bSawcVCovtYvXHvCeNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "36041664943-83vrbe08pdalj9r22b12jvr1t7fminj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

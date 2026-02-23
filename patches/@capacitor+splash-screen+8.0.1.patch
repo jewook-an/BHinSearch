@@ -1,0 +1,13 @@
+diff --git a/node_modules/@capacitor/splash-screen/android/build.gradle b/node_modules/@capacitor/splash-screen/android/build.gradle
+index f37654d..c10f15c 100644
+--- a/node_modules/@capacitor/splash-screen/android/build.gradle
++++ b/node_modules/@capacitor/splash-screen/android/build.gradle
+@@ -46,7 +46,7 @@ android {
+             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+     }
+-    lintOptions {
++    lint {
+         abortOnError = false
+     }
+     compileOptions {

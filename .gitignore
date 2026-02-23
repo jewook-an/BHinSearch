@@ -13,11 +13,20 @@
 
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# IDE
+.idea/
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Android signing key (보안 - 절대 커밋하지 말 것!)
+*.keystore
+*.jks
+android/app/bhinsearch-release.keystore

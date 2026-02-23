@@ -1,0 +1,13 @@
+diff --git a/node_modules/@capacitor/status-bar/android/build.gradle b/node_modules/@capacitor/status-bar/android/build.gradle
+index 53e290a..56b9c6c 100644
+--- a/node_modules/@capacitor/status-bar/android/build.gradle
++++ b/node_modules/@capacitor/status-bar/android/build.gradle
+@@ -46,7 +46,7 @@ android {
+             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+     }
+-    lintOptions {
++    lint {
+         abortOnError = false
+     }
+     compileOptions {

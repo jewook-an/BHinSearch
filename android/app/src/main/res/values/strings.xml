@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BHinSearch</string>
+    <string name="title_activity_main">BHinSearch</string>
+    <string name="package_name">com.bhinsearch.app</string>
+    <string name="custom_url_scheme">com.bhinsearch.app</string>
+    <string name="server_client_id">36041664943-83vrbe08pdalj9r22b12jvr1t7fminj7.apps.googleusercontent.com</string>
+</resources>

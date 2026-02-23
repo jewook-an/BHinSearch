@@ -1,0 +1,14 @@
+diff --git a/node_modules/@codetrix-studio/capacitor-google-auth/android/build.gradle b/node_modules/@codetrix-studio/capacitor-google-auth/android/build.gradle
+index fb70a39..7374262 100644
+--- a/node_modules/@codetrix-studio/capacitor-google-auth/android/build.gradle
++++ b/node_modules/@codetrix-studio/capacitor-google-auth/android/build.gradle
+@@ -7,8 +7,8 @@ ext {
+ 
+ buildscript {
+     repositories {
+-        jcenter()
+         google()
++        mavenCentral()
+     }
+     dependencies {
+         classpath 'com.android.tools.build:gradle:8.0.0'
