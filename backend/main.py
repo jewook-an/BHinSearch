@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from app.config import settings
 from app.database import init_db
 from app.routers import auth, users, profiles, positions, applications, files, notifications, posts
+from app.routers import admin_auth, admin_users, admin_audit
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -29,6 +32,11 @@ app.include_router(files.router, prefix=f"{settings.API_V1_PREFIX}/files", tags=
 app.include_router(notifications.router, prefix=f"{settings.API_V1_PREFIX}/notifications", tags=["알림"])
 app.include_router(posts.router, prefix=f"{settings.API_V1_PREFIX}/posts", tags=["게시판"])
 
+# 관리자 라우터 등록 - /api/v1/admin/auth, /api/v1/admin/users 등
+app.include_router(admin_auth.router, prefix=f"{settings.API_V1_PREFIX}/admin/auth", tags=["관리자-인증"])
+app.include_router(admin_users.router, prefix=f"{settings.API_V1_PREFIX}/admin/users", tags=["관리자-사용자"])
+app.include_router(admin_audit.router, prefix=f"{settings.API_V1_PREFIX}/admin/audit", tags=["관리자-감시"])
+
 @app.on_event("startup")
 async def startup_event():
     """앱 시작 시 실행"""
@@ -48,6 +56,10 @@ async def root():
 async def health_check():
     """헬스 체크"""
     return {"status": "healthy"}
+
+
+# 관리자 프론트엔드 정적 파일 제공 (SPA routing)
+app.mount("/admin", StaticFiles(directory="static/admin", html=True), name="admin")
 
 if __name__ == "__main__":
     import uvicorn

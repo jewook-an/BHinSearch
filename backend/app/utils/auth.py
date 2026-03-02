@@ -1,26 +1,30 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from passlib.context import CryptContext
+import bcrypt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from app.config import settings
 from app.models.user import User
 from app.schemas.user import TokenData
 
-# 비밀번호 해싱
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 # OAuth2 스키마
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_PREFIX}/auth/token")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """비밀번호 검증"""
-    return pwd_context.verify(plain_password, hashed_password)
+    """비밀번호 검증 using bcrypt"""
+    try:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    except Exception:
+        return False
 
 def get_password_hash(password: str) -> str:
-    """비밀번호 해싱"""
-    return pwd_context.hash(password)
+    """비밀번호 해싱 using bcrypt"""
+    # bcrypt limits passwords to 72 bytes; cut if longer
+    pw = password.encode('utf-8')
+    if len(pw) > 72:
+        pw = pw[:72]
+    return bcrypt.hashpw(pw, bcrypt.gensalt()).decode('utf-8')
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """액세스 토큰 생성"""

@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
+# dependencies (루트 및 하위 폴더 모두 적용)
+node_modules/
 /.pnp
 .pnp.js
 
@@ -30,3 +30,14 @@ yarn-error.log*
 *.keystore
 *.jks
 android/app/bhinsearch-release.keystore
+
+# Python 캐시
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Python 가상환경
+.venv/
+venv/
+env/

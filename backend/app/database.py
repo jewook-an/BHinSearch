@@ -40,3 +40,8 @@ async def close_db():
 def get_database():
     """데이터베이스 인스턴스 반환"""
     return database
+
+
+def get_db():
+    """FastAPI 의 Depends 용 간단한 DI 함수"""
+    return database
