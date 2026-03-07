@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { adminApi } from '@/api/client'
 
 export interface AdminUser {
   id: string
@@ -20,17 +21,9 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await fetch('/api/v1/admin/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
+      const response = await adminApi.post('/admin/auth/login', { email, password })
 
-      if (!response.ok) {
-        throw new Error('로그인 실패')
-      }
-
-      const data = await response.json()
+      const data = response.data
       token.value = data.access_token
       user.value = data.user
       localStorage.setItem('admin_token', data.access_token)
