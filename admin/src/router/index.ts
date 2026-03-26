@@ -17,43 +17,43 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/Dashboard.vue'),
+        component: () => import('@/views/Dashboard/index.vue'),
         meta: { title: '대시보드' }
       },
       {
         path: 'users',
         name: 'Users',
-        component: () => import('@/views/Users.vue'),
+        component: () => import('@/views/Users/index.vue'),
         meta: { title: '사용자 관리' }
       },
       {
         path: 'menus',
         name: 'Menus',
-        component: () => import('@/views/Menus.vue'),
+        component: () => import('@/views/Menus/index.vue'),
         meta: { title: '메뉴 관리' }
       },
       {
         path: 'audit',
         name: 'Audit',
-        component: () => import('@/views/Audit.vue'),
+        component: () => import('@/views/Audit/index.vue'),
         meta: { title: '이력 관리' }
       },
       {
         path: 'positions',
         name: 'Positions',
-        component: () => import('@/views/Positions.vue'),
+        component: () => import('@/views/Positions/index.vue'),
         meta: { title: '포지션 관리' }
       },
       {
         path: 'applications',
         name: 'Applications',
-        component: () => import('@/views/Applications.vue'),
+        component: () => import('@/views/Applications/index.vue'),
         meta: { title: '지원 관리' }
       },
       {
         path: 'community',
         name: 'Community',
-        component: () => import('@/views/Community.vue'),
+        component: () => import('@/views/Community/index.vue'),
         meta: { title: '커뮤니티' }
       }
     ]
